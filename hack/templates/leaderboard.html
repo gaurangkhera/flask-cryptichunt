@@ -6,11 +6,16 @@
         <h3>There is nothing to show :(</h3>
     {% else %}
     {% for user in users %}
+    {% if user.username == 'xino' %}
+
+    {% else %}
     {% if user == current_user %}
     <h3>{{user.username}}(you) - {{user.correct_ans}} points</h3>
+    
     {% else %}
     <h3>{{user.username}} - {{user.correct_ans}} points</h3>
 
+    {% endif %}
     {% endif %}
     {% endfor %}
     {% endif %}

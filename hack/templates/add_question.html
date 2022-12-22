@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <center>
+        <form action="/addques" method="post" class="container-fluid">
+            {{form.hidden_tag()}}
+            {{form.csrf_token}}
+            {{form.question(class='form-control', placeholder='question')}}<br>
+            {{form.answer(class='form-control', placeholder='answer')}}
+            {{form.submit(class='btn btn-primary mt-2')}}
+        </form>
+    </center>
+{% endblock %}

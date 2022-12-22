@@ -1,7 +1,7 @@
 from hack import app, create_db,db
-from flask import render_template, redirect, url_for, send_from_directory, request, abort
+from flask import render_template, redirect, url_for, abort
 from flask_login import current_user, login_required, login_user, logout_user
-from hack.forms import LoginForm, RegForm, HuntForm
+from hack.forms import LoginForm, RegForm, HuntForm, QuestionForm
 from hack.models import User, Question
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
@@ -31,11 +31,14 @@ def reg():
             new_user = User(email=email, username=username, password=generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
-            login_user(new_user, remember=True)
-            return redirect(url_for('home'))
-
+            if current_user.is_authenticated and current_user.username != 'xino':
+                login_user(new_user, remember=True)
+                return redirect(url_for('home'))
+            else:
+                return redirect(url_for('admin'))
     if current_user.is_authenticated:
-        return abort(404)
+        if current_user.username != 'xino':
+            return abort(404)
     return render_template('reg.html', form=form, mess=mess)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -94,7 +97,7 @@ def play(id):
             mess='correct'
             question = question.id + 1
             current_user.correct_ans += 1
-            current_user.ans_time = datetime.utcnow()
+            current_user.ans_time = datetime.now()
             db.session.add(current_user)
             db.session.commit()
             return redirect(url_for('play', id=question))
@@ -106,6 +109,50 @@ def play(id):
 def lb():
     users = User.query.order_by(User.correct_ans.desc(), User.ans_time.asc()).all()
     return render_template('leaderboard.html', users=users)
+
+@app.route('/admin')
+@login_required
+def admin():
+    if current_user.username == "xino":
+        users = User.query.all()
+        questions = Question.query.all()
+        return render_template('admin.html', users=users, questions=questions)
+    return abort(403)
+
+@app.route('/deleteuser/<id>')
+@login_required
+def delete_user(id):
+    if current_user.username == "xino":
+        user = User.query.filter_by(id=id).first()
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('admin'))
+    return abort(403)
+    
+@app.route('/deleteques/<id>')
+@login_required
+def delete_question(id):
+    if current_user.username == "xino":
+        question = Question.query.filter_by(id=id).first()
+        db.session.delete(question)
+        db.session.commit()
+        return redirect(url_for('admin'))
+    return abort(403)
+
+@app.route('/addques', methods=['GET', 'POST'])
+@login_required
+def add_ques():
+    form = QuestionForm()
+    if current_user.username == 'xino':
+        if form.validate_on_submit():
+            question = form.question.data
+            answer = form.answer.data
+            new_question = Question(ques=question, ans=answer)
+            db.session.add(new_question)
+            db.session.commit()
+            return redirect(url_for('admin'))
+        return render_template('add_question.html', form=form)
+    return abort(403)
 
 if __name__ == '__main__':
     app.run(debug=True)

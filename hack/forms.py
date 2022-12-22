@@ -16,3 +16,8 @@ class RegForm(FlaskForm):
 class HuntForm(FlaskForm):
     ans = StringField('answer', validators=[DataRequired()])
     submit = SubmitField('submit')
+
+class QuestionForm(FlaskForm):
+    question = StringField('Question', validators=[DataRequired()])
+    answer = StringField('Answer', validators=[DataRequired()])
+    submit = SubmitField('Submit')
