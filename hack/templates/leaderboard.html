@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+    <h1>Leaderboard</h1><br>
+    {% for user in users %}
+    {% if user == current_user %}
+    <h3>{{user.username}}(you) - {{user.correct_ans}} points</h3>
+    {% else %}
+    <h3>{{user.username}} - {{user.correct_ans}} points</h3>
+
+    {% endif %}
+    {% endfor %}
+</center>
+{% endblock %}

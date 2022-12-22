@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+    {{question.ques}}
+<form action="/play/{{question.id}}" method="post" class="container-fluid mt-2 ">
+    {{form.hidden_tag()}}
+    {{form.csrf_token}}
+    {{form.ans(class='form-control', placeholder='your answer')}}
+    {% if mess == 'correct' %}
+    <div class="text-success">
+        {{mess}}
+    </div>
+    {% else %}
+    <div class="text-danger">
+        {{mess}}
+    </div>
+    {% endif %}
+    {{form.submit(class='btn btn-primary mt-2')}}
+</form>
+</center>
+{% endblock %}
