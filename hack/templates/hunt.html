@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <center>
-    {{question.ques}}
+    Level {{question.id}}
+    {{question.ques}}?
 <form action="/play/{{question.id}}" method="post" class="container-fluid mt-2 ">
     {{form.hidden_tag()}}
     {{form.csrf_token}}
