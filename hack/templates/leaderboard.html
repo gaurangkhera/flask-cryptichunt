@@ -3,7 +3,7 @@
 <center>
     <h1>Leaderboard</h1><br>
     {% if users|length == 0 %}
-        <h3>There's nothing to show. :(</h3>
+        <h3>There's nothing to show :(</h3>
     {% else %}
     {% for user in users %}
     {% if user == current_user %}
