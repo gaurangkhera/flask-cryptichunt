@@ -5,14 +5,14 @@
         {% for user in users %}
         {% if user.username == 'xino' %}
         {% else %}
-        <h4>{{user.username}} | {{user.email}} <a class="btn btn-danger" href="/deleteuser/{{user.id}}">Delete user</a></h4>
+        <h4>Username: {{user.username}} | Email: {{user.email}} | Points: {{user.correct_ans}} <a class="btn btn-danger" href="/deleteuser/{{user.id}}">Delete user</a> <a class="btn btn-primary" href="/edituser/{{user.id}}">Edit user</a></h4>
         {% endif %}
         {% endfor %}
         <a class="btn btn-primary" href="/reg">Add user</a>
         <hr>
         <h1>Questions:</h1>
         {% for question in questions %}
-            <h4>{{question.ques}} | {{question.ans}} <a class="btn btn-danger" href="/deleteques/{{question.id}}">Delete question</a></h4>
+            <h4>Question: {{question.ques}} | Answer: {{question.ans}} <a class="btn btn-danger" href="/deleteques/{{question.id}}">Delete question</a> <a class="btn btn-primary" href="/editques/{{question.id}}">Edit question</a></h4>
         {% endfor %}
         <a class="btn btn-primary" href="/addques">Add question</a>
 </center>

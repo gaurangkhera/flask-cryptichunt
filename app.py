@@ -1,7 +1,7 @@
 from hack import app, create_db,db
 from flask import render_template, redirect, url_for, abort
 from flask_login import current_user, login_required, login_user, logout_user
-from hack.forms import LoginForm, RegForm, HuntForm, QuestionForm
+from hack.forms import LoginForm, RegForm, HuntForm, QuestionForm, EditUserForm, EditQuesForm
 from hack.models import User, Question
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
@@ -154,7 +154,42 @@ def add_ques():
         return render_template('add_question.html', form=form)
     return abort(403)
 
+@app.route('/edituser/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_user(id):
+    if current_user.username == 'xino':
+        user = User.query.filter_by(id=id).first()
+        form = EditUserForm()
+        if form.validate_on_submit():
+            new_username = form.username.data
+            new_email = form.email.data
+            new_points = form.points.data
+            user.username = new_username
+            user.email = new_email
+            user.correct_ans = new_points
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('admin'))
+        return render_template('edit_user.html', user=user, form=form)
+    return abort(403)
+
+@app.route('/editques/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_question(id):
+    if current_user.username == 'xino':
+        question = Question.query.filter_by(id=id).first()
+        form = EditQuesForm()
+        if form.validate_on_submit():
+            new_ques = form.question.data
+            new_ans = form.ans.data
+            question.ques = new_ques
+            question.ans = new_ans
+            db.session.add(question)
+            db.session.commit()
+            return redirect(url_for('admin'))
+        return render_template('edit_ques.html', form=form, question=question)
+    return abort(403)
+
 if __name__ == '__main__':
     app.run(debug=True)
-    print('lol')
 

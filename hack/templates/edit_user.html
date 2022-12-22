@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <center>
+        <h1>Edit {{user.username}}</h1>
+        <form action="/edituser/{{user.id}}" method="post" class="container-fluid mt-2">
+            {{form.hidden_tag()}}
+            {{form.csrf_token}}
+            {{form.username(class='form-control', placeholder='Updated username')}}<br>
+            {{form.email(class='form-control', placeholder='Updated email')}}<br>
+            {{form.points(class='form-control', placeholder='Updated points')}}
+            {{form.submit(class='btn btn-primary mt-2')}}
+        </form>
+    </center>
+{% endblock %}

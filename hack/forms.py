@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField
+from wtforms import StringField,PasswordField,SubmitField, IntegerField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
@@ -20,4 +20,15 @@ class HuntForm(FlaskForm):
 class QuestionForm(FlaskForm):
     question = StringField('Question', validators=[DataRequired()])
     answer = StringField('Answer', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class EditUserForm(FlaskForm):
+    username = StringField('Updated text', validators=[DataRequired()])
+    email = StringField('Updated text2', validators=[DataRequired()])
+    points = IntegerField('Points')
+    submit = SubmitField('Submit')
+
+class EditQuesForm(FlaskForm):
+    question = StringField('new_q', validators=[DataRequired()])
+    ans = StringField('new_ans', validators=[DataRequired()])
     submit = SubmitField('Submit')
