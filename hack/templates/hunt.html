@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if current_user.correct_ans >= maxq|length %}
+    <center>You have completed the cryptic hunt!</center>
+{% else %}
 <center>
-    Level {{question.id}}
+    <h1>Level {{question.id}}</h1>
     {{question.ques}}?
 <form action="/play/{{question.id}}" method="post" class="container-fluid mt-2 ">
     {{form.hidden_tag()}}
@@ -19,4 +22,5 @@
     {{form.submit(class='btn btn-primary mt-2')}}
 </form>
 </center>
+{% endif %}
 {% endblock %}

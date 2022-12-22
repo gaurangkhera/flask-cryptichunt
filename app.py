@@ -10,9 +10,10 @@ create_db(app)
 
 @app.route('/')
 def home():
-    ques = Question(ques='are u smart', ans='no')
-    db.session.add(ques)
-    db.session.commit()
+    for i in range(10):
+        question = Question(ques="hello does your computer have virus", ans='yes')
+        db.session.add(question)
+        db.session.commit()
     return render_template('index.html')
 
 @app.route('/reg', methods=['GET', 'POST'])
@@ -86,9 +87,7 @@ def play(id):
     mess=''
     question = Question.query.filter_by(id=id).first()
     form = HuntForm()
-    max = Question.query.order_by(Question.id.desc())
-    if current_user.correct_ans > max[0].id:
-        return "nice one! u win"
+    maxq = Question.query.all()
     if form.validate_on_submit():
         ans = form.ans.data
         if ans == question.ans:
@@ -101,7 +100,7 @@ def play(id):
             return redirect(url_for('play', id=question))
         elif ans != question.ans:
             mess='wrong'
-    return render_template('hunt.html', question=question, form=form, mess=mess)
+    return render_template('hunt.html', question=question, form=form, mess=mess, maxq=maxq)
 
 @app.route('/lb')
 def lb():
@@ -110,4 +109,5 @@ def lb():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    print('lol')
 
