@@ -3,13 +3,14 @@
 <center>
     <h1>Leaderboard</h1><br>
     {% if users|length == 0 %}
-        <h3>There's nothing to show :(</h3>
+        <h3>There is nothing to show :(</h3>
     {% else %}
     {% for user in users %}
     {% if user == current_user %}
-    <h3>{{user.username}}(you) - {{user.correct_ans}} points in {{user.ans_time}}</h3>
+    <h3>{{user.username}}(you) - {{user.correct_ans}} points</h3>
     {% else %}
     <h3>{{user.username}} - {{user.correct_ans}} points</h3>
+
     {% endif %}
     {% endfor %}
     {% endif %}

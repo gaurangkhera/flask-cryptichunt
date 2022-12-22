@@ -10,10 +10,10 @@ create_db(app)
 
 @app.route('/')
 def home():
-#     for i in range(10):
-#         question = Question(ques="hello does your computer have virus", ans='yes')
-#         db.session.add(question)
-#         db.session.commit()
+    # for i in range(10):
+    #     question = Question(ques="hello does your computer have virus", ans='yes')
+    #     db.session.add(question)
+    #     db.session.commit()
     return render_template('index.html')
 
 @app.route('/reg', methods=['GET', 'POST'])
