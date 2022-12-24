@@ -15,5 +15,10 @@
             <h4>Question: {{question.ques}} | Answer: {{question.ans}} <a class="btn btn-danger" href="/deleteques/{{question.id}}">Delete question</a> <a class="btn btn-primary" href="/editques/{{question.id}}">Edit question</a></h4>
         {% endfor %}
         <a class="btn btn-primary" href="/addques">Add question</a>
+        <hr>
+        <h1>Queries:</h1>
+        {% for query in queries %}
+            <h4>{{query.id}}. {{query.text}} - {{query.poster}} <a class="btn btn-success" href="/resolve/{{query.id}}">Mark as resolved</a></h4><br>
+        {% endfor %}
 </center>
 {% endblock %}

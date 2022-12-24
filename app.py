@@ -1,8 +1,8 @@
 from hack import app, create_db,db
 from flask import render_template, redirect, url_for, abort
 from flask_login import current_user, login_required, login_user, logout_user
-from hack.forms import LoginForm, RegForm, HuntForm, QuestionForm, EditUserForm, EditQuesForm
-from hack.models import User, Question
+from hack.forms import LoginForm, RegForm, HuntForm, QuestionForm, EditUserForm, EditQuesForm, ContactForm
+from hack.models import User, Question, ContactQuery
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
 
@@ -116,7 +116,8 @@ def admin():
     if current_user.username == "xino":
         users = User.query.all()
         questions = Question.query.all()
-        return render_template('admin.html', users=users, questions=questions)
+        queries = ContactQuery.query.all()
+        return render_template('admin.html', users=users, questions=questions, queries=queries)
     return abort(403)
 
 @app.route('/deleteuser/<id>')
@@ -188,6 +189,31 @@ def edit_question(id):
             db.session.commit()
             return redirect(url_for('admin'))
         return render_template('edit_ques.html', form=form, question=question)
+    return abort(403)
+
+@app.route('/query', methods=['GET', 'POST'])
+@login_required
+def contact():
+    form = ContactForm()
+    if form.validate_on_submit():
+        text = form.text.data
+        new_query = ContactQuery(text=text, poster=current_user.username)
+        db.session.add(new_query)
+        db.session.commit()
+        return redirect('/')
+    return render_template('contact.html', form=form)
+
+@app.route('/resolve/<id>')
+@login_required
+def resolve(id):
+    query_ = ContactQuery.query.filter_by(id=id).first()
+    if current_user.username == 'xino' or current_user.username == query_.poster:
+        db.session.delete(query_)
+        db.session.commit()
+        if current_user.username == 'xino':
+            return redirect(url_for('admin'))
+        else:
+            return redirect(url_for('contact'))
     return abort(403)
 
 if __name__ == '__main__':

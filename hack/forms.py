@@ -32,3 +32,7 @@ class EditQuesForm(FlaskForm):
     question = StringField('new_q', validators=[DataRequired()])
     ans = StringField('new_ans', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class ContactForm(FlaskForm):
+    text = StringField('Query', validators=[DataRequired()])
+    submit = SubmitField('Submit')

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+<form action="/query" method="post" class="container-fluid mt-2 ">
+    {{form.hidden_tag()}}
+    {{form.csrf_token}}
+    {{form.text(class='form-control', placeholder='query')}}<br>
+    {{form.submit(class='btn btn-primary mt-2')}}
+</form>
+<h1>Your queries: </h1>
+{% for query in current_user.queries  %}
+    <h4>{{query.id}}. {{query.text}} <a class='btn btn-success'href="/resolve/{{query.id}}">Mark as resolved</a></h4>
+{% endfor %}
+</center>
+{% endblock %}
