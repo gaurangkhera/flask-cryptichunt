@@ -31,11 +31,11 @@ def reg():
             new_user = User(email=email, username=username, password=generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
-            if current_user.is_authenticated and current_user.username != 'xino':
-                login_user(new_user, remember=True)
-                return redirect(url_for('home'))
+            if not current_user.is_authenticated:
+                login_user(new_user)
+                return redirect('/')
             else:
-                return redirect(url_for('admin'))
+                return redirect('/admin')
     if current_user.is_authenticated:
         if current_user.username != 'xino':
             return abort(404)
@@ -200,7 +200,7 @@ def contact():
         new_query = ContactQuery(text=text, poster=current_user.username)
         db.session.add(new_query)
         db.session.commit()
-        return redirect('/')
+
     return render_template('contact.html', form=form)
 
 @app.route('/resolve/<id>')
